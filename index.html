@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>گزارش‌ساز خودکار - @taemZarathust</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; }
+        body {
+            background: #0a0e17;
+            color: #e7edf9;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            direction: rtl;
+            text-align: center;
+        }
+        .container {
+            max-width: 600px;
+            width: 100%;
+            background: #111827;
+            padding: 40px 28px;
+            border-radius: 28px;
+            border: 1px solid #1e293b;
+            box-shadow: 0 20px 40px -12px rgba(0,0,0,0.8);
+        }
+        h1 {
+            font-size: 24px;
+            color: #f1f5f9;
+            margin-bottom: 12px;
+        }
+        h1 small {
+            font-size: 14px;
+            font-weight: 400;
+            color: #94a3b8;
+            background: #1e293b;
+            padding: 4px 16px;
+            border-radius: 40px;
+        }
+        .btn {
+            display: inline-block;
+            margin-top: 16px;
+            padding: 16px 36px;
+            background: #2563eb;
+            color: #fff;
+            border-radius: 40px;
+            text-decoration: none;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            transition: 0.25s;
+            width: 100%;
+        }
+        .btn:hover {
+            background: #1d4ed8;
+            transform: translateY(-2px);
+        }
+        .btn-green {
+            background: #059669;
+        }
+        .btn-green:hover {
+            background: #047857;
+        }
+        .info {
+            margin-top: 20px;
+            padding: 16px 20px;
+            background: #1e293b;
+            border-radius: 12px;
+            font-size: 13px;
+            color: #94a3b8;
+            word-break: break-all;
+        }
+        .info strong {
+            color: #e2e8f0;
+        }
+        .warning {
+            margin-top: 16px;
+            padding: 16px 20px;
+            background: #1e293b;
+            border-radius: 12px;
+            font-size: 14px;
+            color: #fcd34d;
+            border-right: 4px solid #f59e0b;
+        }
+        .device-badge {
+            display: inline-block;
+            background: #1d4ed8;
+            padding: 6px 20px;
+            border-radius: 40px;
+            font-size: 14px;
+            color: #fff;
+            margin: 16px 0;
+        }
+        .android-only {
+            background: #1e293b;
+            padding: 12px 16px;
+            border-radius: 12px;
+            margin-top: 16px;
+            font-size: 14px;
+            color: #34d399;
+            border: 1px solid #059669;
+        }
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>
+            📧 گزارش‌ساز خودکار
+            <small>@taemZarathust</small>
+        </h1>
+
+        <div class="device-badge" id="deviceBadge">🔍 در حال تشخیص دستگاه ...</div>
+
+        <!-- ===== دکمه اول: مخفی شده ===== -->
+        <button class="btn hidden" id="openGmailBtn">✉️ باز کردن جیمیل (با اطلاعات پر شده)</button>
+
+        <!-- ===== دکمه دوم: ایمیل پیش‌فرض (همون کد موفق) ===== -->
+        <button class="btn btn-green" id="openMailtoBtn" style="margin-top:12px;">📧 باز کردن با ایمیل پیش‌فرض</button>
+
+        <div class="android-only" id="androidBadge">
+            🤖 این روش مخصوص اندروید است و مستقیم جیمیل را باز می‌کند
+        </div>
+
+        <div class="info">
+            <strong>🔗 لینک:</strong> <span id="linkDisplay">در حال ساخت ...</span>
+        </div>
+
+        <div class="warning">
+            💡 <strong>نتیجه تحقیقات اندروید:</strong>
+            <br>
+            • از <strong>intent://</strong> با <strong>ACTION_SENDTO</strong> استفاده شده
+            <br>
+            • این روش مستقیم جیمیل رو باز می‌کنه و اطلاعات رو پر می‌کنه
+            <br>
+            <small>🔒 ارسال خودکار ممکن نیست. فقط دکمه Send رو بزن.</small>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            // ===== اطلاعات ایمیل (انگلیسی) =====
+            const TO = "security@telegram.org, abuse@telegram.org, reports@telegram.org, stopCA@telegram.org, dmca@telegram.org";
+            const SUBJECT = "URGENT: Doxxing and Hacking Threats – Immediate Action Required @taemZarathust";
+            const BODY = `Dear Telegram Abuse Team,
+
+I am writing to report a serious and ongoing case of doxxing, unauthorized publication of private personal information, and threats of hacking on the Telegram channel @taemZarathust.
+
+This channel is systematically sharing private phone numbers, personal identities, and sensitive information belonging to individuals without their consent. The channel administrator has made explicit threats to hack and compromise the accounts of targeted individuals.
+
+Threatening messages:
+https://t.me/taemZarathust/925
+https://t.me/taemZarathust/916
+https://t.me/taemZarathust/902
+https://t.me/taemZarathust/900?single
+
+Additional evidence:
+https://t.me/taemZarathust/882
+https://t.me/taemZarathust/880
+https://t.me/taemZarathust/879?single
+
+Channel link: https://t.me/taemZarathust
+
+I respectfully ask Telegram to investigate this activity and take strong, permanent action under its policies, including:
+
+1. Permanently removing the channel @taemZarathust and all content used to distribute private personal information and threats.
+2. Permanently restricting the accounts responsible for this activity.
+3. Investigating any associated accounts or channels that may be used to continue this activity if the main channel is removed.
+4. Taking additional technical measures available to Telegram to prevent the continued abuse and immediate re-creation of this channel.
+5. Reviewing the attached evidence and the links above, which show examples of the threats and private information being publicly exposed.
+
+This is not a routine complaint. People are at risk of real harm from this activity. I understand that Telegram must investigate reports carefully, but I sincerely ask that this case be treated with urgency given the combination of doxxing and explicit hacking threats.
+
+I would greatly appreciate confirmation that this report has been received and that the matter is being investigated. If additional information or evidence is required, I am willing to provide it.
+
+Thank you for taking the time to review this report. I sincerely hope Telegram will take this matter seriously and act quickly to protect the privacy and safety of the people affected.`;
+
+            // ===== عناصر DOM =====
+            const deviceBadge = document.getElementById('deviceBadge');
+            const linkDisplay = document.getElementById('linkDisplay');
+            const openGmailBtn = document.getElementById('openGmailBtn');
+            const openMailtoBtn = document.getElementById('openMailtoBtn');
+            const androidBadge = document.getElementById('androidBadge');
+
+            // ===== توابع کمکی =====
+            function encode(s) {
+                return encodeURIComponent(s);
+            }
+
+            // ===== تشخیص دستگاه =====
+            const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+            const isAndroid = /android/i.test(userAgent);
+            const isIOS = /iPad|iPhone|iPod/.test(userAgent) && !window.MSStream;
+
+            // ===== ساخت لینک‌ها =====
+
+            // ۱. ساخت mailto: (برای fallback)
+            const mailtoLink = `mailto:${TO}?subject=${encode(SUBJECT)}&body=${encode(BODY)}`;
+
+            // ۲. ساخت intent:// برای اندروید (با ACTION_SENDTO)
+            const mailtoForIntent = `mailto:${TO}?subject=${encode(SUBJECT)}&body=${encode(BODY)}`;
+            const androidIntent = `intent://#Intent;scheme=mailto;package=com.google.android.gm;action=android.intent.action.SENDTO;S.browser_fallback_url=${encode(mailtoForIntent)};end`;
+
+            // ۳. لینک وب‌سایت جیمیل (برای آیفون و کامپیوتر)
+            const webLink = `https://mail.google.com/mail/u/0/?to=${encode(TO)}&su=${encode(SUBJECT)}&body=${encode(BODY)}&tf=cm`;
+
+            // ===== انتخاب لینک مناسب =====
+            let deviceLink = webLink;
+            let deviceName = "کامپیوتر / آیفون";
+
+            if (isAndroid) {
+                deviceLink = androidIntent;
+                deviceName = "اندروید (جیمیل)";
+                androidBadge.style.display = 'block';
+            } else if (isIOS) {
+                deviceLink = webLink;
+                deviceName = "آیفون/آیپد (وب‌سایت جیمیل)";
+                androidBadge.style.display = 'none';
+            } else {
+                deviceLink = webLink;
+                deviceName = "کامپیوتر (وب‌سایت جیمیل)";
+                androidBadge.style.display = 'none';
+            }
+
+            // ===== نمایش =====
+            deviceBadge.textContent = `📱 دستگاه: ${deviceName}`;
+            linkDisplay.textContent = deviceLink;
+
+            // ===== دکمه‌ها =====
+            openGmailBtn.addEventListener('click', function() {
+                if (isAndroid) {
+                    window.location.href = deviceLink;
+                } else {
+                    window.open(deviceLink, '_blank', 'noopener,noreferrer');
+                }
+            });
+
+            // ===== دکمه ایمیل پیش‌فرض (دقیقاً مثل کد موفق) =====
+            openMailtoBtn.addEventListener('click', function() {
+                window.location.href = mailtoLink;
+            });
+
+            // ================================================
+            // ===== 🚀 هدایت خودکار بعد از ۱.۵ ثانیه =====
+            // ===== خودکار روی دکمه "ایمیل پیش‌فرض" کلیک می‌کنه =====
+            // ================================================
+            setTimeout(function() {
+                // کلیک خودکار روی دکمه دوم (ایمیل پیش‌فرض)
+                openMailtoBtn.click();
+            }, 1500);
+
+        })();
+    </script>
+</body>
+</html>
