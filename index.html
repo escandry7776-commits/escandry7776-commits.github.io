@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>گزارش‌ساز خودکار - @taemZarathust</title>
+    <style>
+        *{box-sizing:border-box;margin:0}
+        body{background:#0a0e17;color:#e7edf9;font-family:'Segoe UI',system-ui,sans-serif;display:flex;justify-content:center;align-items:center;min-height:100vh;padding:20px;direction:rtl;text-align:center}
+        .container{max-width:620px;width:100%;background:#111827;padding:36px 26px;border-radius:28px;border:1px solid #1e293b;box-shadow:0 20px 40px -12px rgba(0,0,0,.8)}
+        h1{font-size:22px;color:#f1f5f9;margin-bottom:10px}
+        h1 small{font-size:13px;font-weight:400;color:#94a3b8;background:#1e293b;padding:4px 14px;border-radius:40px}
+        .btn{display:inline-block;margin-top:14px;padding:15px 32px;background:#2563eb;color:#fff;border-radius:40px;text-decoration:none;font-weight:600;border:none;cursor:pointer;font-size:17px;transition:.25s;width:100%}
+        .btn:hover{background:#1d4ed8;transform:translateY(-2px)}
+        .btn-green{background:#059669}.btn-green:hover{background:#047857}
+        .btn-orange{background:#d97706}.btn-orange:hover{background:#b45309}
+        .info{margin-top:18px;padding:14px 18px;background:#1e293b;border-radius:12px;font-size:12px;color:#94a3b8;word-break:break-all;text-align:right;line-height:1.8}
+        .info strong{color:#e2e8f0}
+        .warning{margin-top:14px;padding:14px 18px;background:#1e293b;border-radius:12px;font-size:13px;color:#fcd34d;border-right:4px solid #f59e0b;text-align:right;line-height:1.8}
+        .badge{display:inline-block;background:#1d4ed8;padding:5px 18px;border-radius:40px;font-size:13px;color:#fff;margin:12px 0}
+        .preview{margin-top:14px;padding:14px 18px;background:#0f172a;border-radius:12px;font-size:12px;color:#cbd5e1;text-align:left;direction:ltr;max-height:200px;overflow-y:auto;line-height:1.7;white-space:pre-wrap;border:1px solid #1e293b}
+        .status{margin-top:10px;padding:10px;border-radius:8px;font-size:13px;display:none}
+        .status.ok{display:block;background:#064e3b;color:#34d399}
+        .status.err{display:block;background:#7f1d1d;color:#fca5a5}
+        .counter{font-size:11px;color:#64748b;margin-top:8px}
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>📧 گزارش‌ساز خودکار <small>@taemZarathust</small></h1>
+    <div class="badge" id="deviceBadge">🔍 در حال تشخیص ...</div>
+
+    <!-- پیش‌نمایش متن انتخاب شده -->
+    <div class="info">
+        <strong>📝 متن گزارش انتخاب شده:</strong>
+        <div class="preview" id="previewText">در حال بارگذاری ...</div>
+        <div class="counter" id="counterText"></div>
+    </div>
+
+    <button class="btn" id="gmailWebBtn">✉️ باز کردن Gmail (وب) — متن خودکار پر می‌شود</button>
+    <button class="btn btn-green" id="gmailAppBtn" style="margin-top:10px">📱 باز کردن Gmail (اپلیکیشن اندروید)</button>
+    <button class="btn btn-orange" id="mailtoBtn" style="margin-top:10px">📧 ایمیل پیش‌فرض دستگاه</button>
+
+    <div class="status" id="statusMsg"></div>
+
+    <div class="warning">
+        💡 <strong>راهنما:</strong><br>
+        • هر بار که صفحه باز شود، یک متن <strong>متفاوت</strong> انتخاب می‌شود<br>
+        • متن، موضوع و گیرندگان <strong>خودکار</strong> پر می‌شوند<br>
+        • فقط دکمه <strong>Send</strong> را بزنید<br>
+        • ۱۰ متن مختلف موجود است
+    </div>
+</div>
+
+<script>
+(function(){
+    // ═══════════════════════════════════════════════════════
+    // گیرندگان و موضوع (ثابت)
+    // ═══════════════════════════════════════════════════════
+    const TO = "security@telegram.org,abuse@telegram.org,reports@telegram.org,stopCA@telegram.org,dmca@telegram.org";
+    const SUBJECT = "URGENT: Doxxing and Hacking Threats – Immediate Action Required @taemZarathust";
+
+    // ═══════════════════════════════════════════════════════
+    // ۱۰ متن گزارش مختلف (هر بار یکی رندوم انتخاب می‌شود)
+    // ═══════════════════════════════════════════════════════
+    const REPORTS = [
+        // ── متن ۱: رسمی و حقوقی ──
+        `Dear Telegram Trust & Safety Team,
+
+I am writing to formally report a serious violation of Telegram's Terms of Service by the channel @taemZarathust.
+
+This channel is engaged in the systematic publication of private personal information (doxxing), including phone numbers, home addresses, and identity details of individuals without their consent. Additionally, the channel administrator has made explicit threats to hack and compromise the accounts of targeted individuals.
+
+Evidence of threatening messages:
+https://t.me/taemZarathust/925
+https://t.me/taemZarathust/916
+https://t.me/taemZarathust/902
+https://t.me/taemZarathust/900
+
+Additional evidence:
+https://t.me/taemZarathust/882
+https://t.me/taemZarathust/880
+https://t.me/taemZarathust/879
+
+Channel: https://t.me/taemZarathust
+
+I respectfully request:
+1. Permanent removal of channel @taemZarathust
+2. Permanent restriction of responsible accounts
+3. Investigation of associated accounts
+4. Prevention of channel re-creation
+5. Review of all evidence links provided
+
+This matter requires urgent attention as individuals are at risk of real-world harm.
+
+Thank you for your prompt investigation.`,
+
+        // ── متن ۲: فوری و مستقیم ──
+        `URGENT REPORT – IMMEDIATE ACTION REQUIRED
+
+Telegram Support,
+
+Channel @taemZarathust is actively doxxing people and making hacking threats RIGHT NOW.
+
+What they are doing:
+- Publishing private phone numbers publicly
+- Sharing home addresses without consent
+- Threatening to hack people's accounts
+- Exposing personal identity information
+
+Proof:
+https://t.me/taemZarathust/925
+https://t.me/taemZarathust/916
+https://t.me/taemZarathust/902
+https://t.me/taemZarathust/900
+https://t.me/taemZarathust/882
+https://t.me/taemZarathust/880
+https://t.me/taemZarathust/879
+
+Channel link: https://t.me/taemZarathust
+
+This is NOT a routine complaint. People's safety is at immediate risk. Please take down this channel and ban the administrators permanently.
+
+I am available to provide additional evidence if needed.`,
+
+        // ── متن ۳: متمرکز بر حریم خصوصی ──
+        `Dear Telegram Privacy Team,
+
+I need to report a severe privacy violation on Telegram.
+
+The channel @taemZarathust is publishing private personal data of individuals without any consent. This includes:
+- Phone numbers
+- Home addresses
+- Personal photographs
+- Identity information
+
+Furthermore, the channel admin has publicly threatened to hack targeted individuals' accounts, putting them at serious risk.
+
+Documented evidence:
+https://t.me/taemZarathust/925
+https://t.me/taemZarathust/916
+https://t.me/taemZarathust/902
+https://t.me/taemZarathust/900
+https://t.me/taemZarathust/882
+https://t.me/taemZarathust/880
+https://t.me/taemZarathust/879
+
+Channel: https://t.me/taemZarathust
+
+Under GDPR and Telegram's own privacy policies, this activity is a clear violation. I request immediate removal of this channel and all associated content, plus permanent bans for the responsible accounts.
+
+Please confirm receipt of this report.`,
+
+        // ── متن ۴: متمرکز بر تهدید سایبری ──
+        `To Telegram Security Team,
+
+I am reporting a channel that is making explicit hacking threats against individuals.
+
+Channel: @taemZarathust
+Link: https://t.me/taemZarathust
+
+The administrator of this channel has:
+1. Publicly threatened to hack specific individuals' accounts
+2. Published private information to facilitate targeted attacks
+3. Encouraged followers to harass and attack targeted people
+4. Shared phone numbers and addresses to enable real-world harm
+
+Threat evidence:
+https://t.me/taemZarathust/925
+https://t.me/taemZarathust/916
+https://t.me/taemZarathust/902
+https://t.me/taemZarathust/900
+
+Doxxing evidence:
+https://t.me/taemZarathust/882
+https://t.me/taemZarathust/880
+https://t.me/taemZarathust/879
+
+This constitutes a direct threat to user safety on your platform. I urge you to:
+- Remove the channel immediately
+- Ban all admin accounts permanently
+- Report to relevant law enforcement if applicable
+- Preserve evidence for potential legal proceedings
+
+Thank you for protecting your users.`,
+
+        // ── متن ۵: کوتاه و تأثیرگذار ──
+        `Telegram Abuse Team,
+
+Channel @taemZarathust must be taken down immediately.
+
+Reason: Systematic doxxing + explicit hacking threats.
+
+They are publishing people's phone numbers, addresses, and personal info publicly, then threatening to hack their accounts.
+
+Evidence:
+https://t.me/taemZarathust/925
+https://t.me/taemZarathust/916
+https://t.me/taemZarathust/902
+https://t.me/taemZarathust/900
+https://t.me/taemZarathust/882
+https://t.me/taemZarathust/880
+https://t.me/taemZarathust/879
+
+Channel: https://t.me/taemZarathust
+
+People are in danger. Please act now.
+
+Request: Permanent ban + channel removal + investigation of linked accounts.`,
+
+        // ── متن ۶: ساختار گزارش‌دهی رسمی ──
+        `REPORT FORM – TELEGRAM ABUSE
+
+Date: ${new Date().toISOString().split('T')[0]}
+Report Type: Doxxing + Hacking Threats
+Severity: CRITICAL
+Channel: @taemZarathust
+Channel URL: https://t.me/taemZarathust
+
+DESCRIPTION:
+The above channel is engaged in the following violations:
+a) Unauthorized publication of private personal information (phone numbers, addresses, identity data)
+b) Explicit threats to hack and compromise user accounts
+c) Incitement of harassment against targeted individuals
+d) Distribution of content intended to cause real-world harm
+
+EVIDENCE LINKS:
+- https://t.me/taemZarathust/925 (threatening message)
+- https://t.me/taemZarathust/916 (threatening message)
+- https://t.me/taemZarathust/902 (threatening message)
+- https://t.me/taemZarathust/900 (threatening message)
+- https://t.me/taemZarathust/882 (doxxing evidence)
+- https://t.me/taemZarathust/880 (doxxing evidence)
+- https://t.me/taemZarathust/879 (doxxing evidence)
+
+REQUESTED ACTION:
+1. Immediate channel removal
+2. Permanent admin ban
+3. Associated account investigation
+4. Anti-recreation measures
+5. Evidence preservation
+
+This report is submitted in good faith. I am willing to provide additional information.`,
+
+        // ── متن ۷: لحن انسانی و احساسی ──
+        `Hello Telegram,
+
+I'm reaching out because I'm genuinely worried about people's safety.
+
+There's a channel called @taemZarathust that is posting people's private information — phone numbers, addresses, personal details — for everyone to see. On top of that, the person running it is openly threatening to hack people's accounts.
+
+I've seen the messages myself:
+https://t.me/taemZarathust/925
+https://t.me/taemZarathust/916
+https://t.me/taemZarathust/902
+https://t.me/taemZarathust/900
+
+And more evidence here:
+https://t.me/taemZarathust/882
+https://t.me/taemZarathust/880
+https://t.me/taemZarathust/879
+
+Channel: https://t.me/taemZarathust
+
+I've already blocked the channel, but I'm worried about the people being targeted. They might not even know their information is out there.
+
+Please, can you look into this and take the channel down? These people deserve to feel safe.
+
+Thank you so much for your time.`,
+
+        // ── متن ۸: متمرکز بر نقض قوانین ──
+        `Dear Telegram Moderation,
+
+This is a formal complaint regarding multiple violations of Telegram's Terms of Service and Community Guidelines by channel @taemZarathust.
+
+Violations identified:
+1. Section on Privacy: Publishing private personal data without consent
+2. Section on Safety: Making threats of hacking and account compromise
+3. Section on Harassment: Targeting individuals for coordinated abuse
+4. Section on Illegal Content: Facilitating doxxing activities
+
+Evidence (7 documented instances):
+https://t.me/taemZarathust/925
+https://t.me/taemZarathust/916
+https://t.me/taemZarathust/902
+https://t.me/taemZarathust/900
+https://t.me/taemZarathust/882
+https://t.me/taemZarathust/880
+https://t.me/taemZarathust/879
+
+Channel URL: https://t.me/taemZarathust
+
+Under Telegram's policies, these violations warrant:
+- Immediate content removal
+- Permanent account suspension
+- Investigation of network of associated channels/accounts
+
+I trust Telegram will handle this with the seriousness it deserves.
+
+Respectfully submitted.`,
+
+        // ── متن ۹: متمرکز بر شواهد ──
+        `Telegram Trust & Safety,
+
+I have compiled documented evidence of doxxing and hacking threats on Telegram channel @taemZarathust.
+
+EVIDENCE SUMMARY:
+
+Message 925: https://t.me/taemZarathust/925
+→ Contains explicit hacking threat against named individual
+
+Message 916: https://t.me/taemZarathust/916
+→ Contains threat to compromise accounts
+
+Message 902: https://t.me/taemZarathust/902
+→ Contains threatening language targeting specific user
+
+Message 900: https://t.me/taemZarathust/900
+→ Contains intimidation and hacking threat
+
+Message 882: https://t.me/taemZarathust/882
+→ Contains published private phone number
+
+Message 880: https://t.me/taemZarathust/880
+→ Contains published personal address
+
+Message 879: https://t.me/taemZarathust/879
+→ Contains published identity information
+
+Channel: https://t.me/taemZarathust
+
+Based on this evidence, I request:
+1. Immediate takedown of all listed messages
+2. Permanent removal of channel @taemZarathust
+3. Permanent ban of channel administrators
+4. Investigation into whether this is part of a larger network
+
+All evidence is timestamped and verifiable through the provided links.`,
+
+        // ── متن ۱۰: ترکیبی و جامع ──
+        `To Telegram Abuse & Security Teams,
+
+I am submitting this report regarding channel @taemZarathust which poses an immediate threat to user safety on your platform.
+
+NATURE OF VIOLATIONS:
+• Doxxing: Systematic publication of private phone numbers, home addresses, and personal identity information
+• Hacking Threats: Explicit public threats to hack and compromise targeted individuals' Telegram accounts
+• Harassment: Coordinated campaign to intimidate and harm specific individuals
+• Privacy Violation: Non-consensual distribution of sensitive personal data
+
+DOCUMENTED EVIDENCE (7 instances):
+https://t.me/taemZarathust/925
+https://t.me/taemZarathust/916
+https://t.me/taemZarathust/902
+https://t.me/taemZarathust/900
+https://t.me/taemZarathust/882
+https://t.me/taemZarathust/880
+https://t.me/taemZarathust/879
+
+CHANNEL: https://t.me/taemZarathust
+
+URGENCY: This is an active and ongoing threat. The targeted individuals may not be aware that their private information has been exposed, putting them at immediate risk of harassment, identity theft, and account compromise.
+
+REQUESTED ACTIONS:
+1. Permanently remove channel @taemZarathust and all its content
+2. Permanently ban all administrator and contributor accounts
+3. Investigate and take action against any associated or backup channels
+4. Implement technical measures to prevent immediate re-creation
+5. Preserve all evidence for potential law enforcement coordination
+6. Consider notifying affected users whose data has been exposed
+
+I understand Telegram receives many reports, but I sincerely ask that this case be prioritized given the combination of active doxxing and explicit hacking threats. Real people are at risk.
+
+I am available to provide any additional information or evidence needed.
+
+Thank you for your dedication to keeping Telegram safe.`
+    ];
+
+    // ═══════════════════════════════════════════════════════
+    // انتخاب رندوم (هر بار متفاوت)
+    // ═══════════════════════════════════════════════════════
+    const idx = Math.floor(Math.random() * REPORTS.length);
+    const BODY = REPORTS[idx];
+
+    // ═══════════════════════════════════════════════════════
+    // نمایش پیش‌نمایش
+    // ═══════════════════════════════════════════════════════
+    document.getElementById('previewText').textContent = BODY;
+    document.getElementById('counterText').textContent =
+        `📌 متن شماره ${idx + 1} از ${REPORTS.length} | ${BODY.length} کاراکتر`;
+
+    // ═══════════════════════════════════════════════════════
+    // تشخیص دستگاه
+    // ═══════════════════════════════════════════════════════
+    const ua = navigator.userAgent || navigator.vendor || window.opera;
+    const isAndroid = /android/i.test(ua);
+    const isIOS = /iPad|iPhone|iPod/.test(ua) && !window.MSStream;
+    const badge = document.getElementById('deviceBadge');
+    if (isAndroid) badge.textContent = '🤖 دستگاه: اندروید';
+    else if (isIOS) badge.textContent = '🍎 دستگاه: آیفون/آیپد';
+    else badge.textContent = '💻 دستگاه: کامپیوتر';
+
+    // ═══════════════════════════════════════════════════════
+    // توابع ساخت لینک
+    // ═══════════════════════════════════════════════════════
+    function enc(s){ return encodeURIComponent(s); }
+
+    function showStatus(msg, ok){
+        const el = document.getElementById('statusMsg');
+        el.textContent = msg;
+        el.className = 'status ' + (ok ? 'ok' : 'err');
+    }
+
+    // [FIX] Gmail Web URL — فرمت درست
+    function gmailWebUrl(){
+        return 'https://mail.google.com/mail/?view=cm&fs=1'
+            + '&to=' + enc(TO)
+            + '&su=' + enc(SUBJECT)
+            + '&body=' + enc(BODY);
+    }
+
+    // [FIX] Android intent — فرمت درست
+    function androidIntent(){
+        // متن کوتاه برای mailto (محدودیت URL)
+        const shortBody = BODY.substring(0, 1800);
+        const mailto = 'mailto:' + enc(TO) + '?subject=' + enc(SUBJECT) + '&body=' + enc(shortBody);
+        return 'intent:' + mailto
+            + '#Intent;scheme=mailto;'
+            + 'package=com.google.android.gm;'
+            + 'action=android.intent.action.SENDTO;'
+            + 'S.browser_fallback_url=' + enc(mailto)
+            + ';end';
+    }
+
+    // [FIX] mailto — متن کوتاه
+    function mailtoUrl(){
+        const shortBody = BODY.substring(0, 1800);
+        return 'mailto:' + enc(TO) + '?subject=' + enc(SUBJECT) + '&body=' + enc(shortBody);
+    }
+
+    // ═══════════════════════════════════════════════════════
+    // دکمه‌ها
+    // ═══════════════════════════════════════════════════════
+    document.getElementById('gmailWebBtn').addEventListener('click', function(){
+        showStatus('⏳ در حال باز کردن Gmail وب ...', true);
+        const w = window.open(gmailWebUrl(), '_blank', 'noopener,noreferrer');
+        if(!w) showStatus('⚠️ پاپ‌آپ مسدود شد. لطفاً پاپ‌آپ را مجاز کنید.', false);
+    });
+
+    document.getElementById('gmailAppBtn').addEventListener('click', function(){
+        if(isAndroid){
+            showStatus('⏳ در حال باز کردن Gmail ...', true);
+            window.location.href = androidIntent();
+        } else {
+            showStatus('⏳ در حال باز کردن Gmail وب ...', true);
+            window.open(gmailWebUrl(), '_blank', 'noopener,noreferrer');
+        }
+    });
+
+    document.getElementById('mailtoBtn').addEventListener('click', function(){
+        showStatus('⏳ در حال باز کردن ایمیل پیش‌فرض ...', true);
+        window.location.href = mailtoUrl();
+    });
+
+    // ═══════════════════════════════════════════════════════
+    // هدایت خودکار بعد از ۲.۵ ثانیه
+    // ═══════════════════════════════════════════════════════
+    setTimeout(function(){
+        if(isAndroid) document.getElementById('gmailAppBtn').click();
+        else document.getElementById('gmailWebBtn').click();
+    }, 2500);
+
+})();
+</script>
+</body>
+</html>
